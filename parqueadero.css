@@ -1,0 +1,36 @@
+.registro{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    height: 20vh;
+    gap: 10%;
+    border: red solid 2px;
+    justify-content: center;
+    align-items: center;
+}
+section{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    border: rgb(0, 0, 0) solid 2px;
+}
+button{
+    height: 20%;
+    width: 80%;
+    border-top: transparent;
+    border-right: transparent;
+    border-left: transparent;
+    border-bottom: black solid 2px;
+}
+input{
+    height: 15%;
+    width: 80%;
+    border-bottom: black solid 2px;
+    border-top: transparent;
+    border-right: transparent;
+    border-left: transparent;
+    background-color: rgb(230, 230, 230);
+}
