@@ -9,24 +9,6 @@ body {
   background-image: url(https://cdna.artstation.com/p/assets/images/images/010/334/406/large/edvige-faini-garage-new-night-webres.jpg?1523887295);
 }
 
-button {
-  height: 10%;
-  width: 60%;
-  border-top: transparent;
-  border-right: transparent;
-  border-left: transparent;
-  border-bottom: black solid 2px;
-}
-input {
-  height: 8%;
-  width: 60%;
-
-  border-bottom: black solid 2px;
-  border-top: transparent;
-  border-right: transparent;
-  border-left: transparent;
-  background: transparent;
-}
 .titulo {
   color: white;
   font-size: 5rem;
@@ -79,15 +61,17 @@ input {
 .opciones a:hover{
   border-bottom: red solid 4px;
 }
-.cuotas .registro{
+.registro{
   height: 73vh;
+  border: rgb(0, 255, 106) solid 2px;
   display:flex;
   justify-content: center;
   align-items: center;
+
 }
 .cuadro{
   width: 60%;
-align-items: center;
+  align-items: center;
   height: 50vh;
   border: rgb(0, 0, 0) solid 4px;
   border-radius: 20px;
@@ -132,10 +116,39 @@ align-items: center;
 #mulas{
   width: 110px;
 }
-.registro{
-  display: flex;
-  width: 100%;
+
+.cuotas2{
+  height: 73vh;
+  border: red solid 2px;
+  display:flex;
   justify-content: center;
   align-items: center;
-  height: 73.5vh;
+  }
+
+  .cuadro2{
+    width: 50%;
+    height: 50vh;
+    border: rgb(0, 0, 0) solid 4px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+  }
+
+.separador_form{
+  height: 15vh;
+  color: white;
+  width: 30%;
+  gap: 10%;
+  border: red solid 2px;
+}
+.boton_regis{
+  height: 3vh;
+  
+  width: 95%;
+  border-radius: 10px;
 }

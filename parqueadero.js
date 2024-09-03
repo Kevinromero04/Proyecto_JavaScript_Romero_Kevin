@@ -9,8 +9,11 @@ async function registre_su_carro() {
     const creador = document.querySelector(".container")
     creador.innerHTML = ""
     const contenido = document.createElement("section")
-    contenido.className = "datos"
-    contenido.innerHTML = `<h1>vamos</h1>`
+    contenido.className = "registro"
+    contenido.innerHTML = `
+    <div class="cuadro2">
+    </div>
+    `
     creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
@@ -25,7 +28,7 @@ async function tarifas_vehiculos() {
     const creador = document.querySelector(".container")
     creador.innerHTML = ""
     const contenido = document.createElement("section")
-    contenido.className = "cuotas"
+    contenido.className = "cuotas2"
     contenido.innerHTML = `
     <div class="cuadro">
     <div class="cuadrito">
@@ -57,6 +60,7 @@ async function tarifas_vehiculos() {
       </div>
   </div>
 </div>
+
 
     `
     creador.appendChild(contenido)

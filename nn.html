@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="boton">StarT</button>
+    <div class="agrega"></div>
+</body>
+<script>
+    const botonevent = document.querySelector('#boton')
+    botonevent.addEventListener('click', cargarLL)
+    function cargarLL(){
+        const mandar = document.querySelector('.agrega')
+        let nuevo = document.createElement('p')
+        nuevo.innerHTML = `hola`
+        mandar.appendChild(nuevo);
+    }
+</script>
+</html>
