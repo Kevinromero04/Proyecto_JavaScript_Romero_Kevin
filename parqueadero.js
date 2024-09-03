@@ -27,23 +27,36 @@ async function tarifas_vehiculos() {
     const contenido = document.createElement("section")
     contenido.className = "cuotas"
     contenido.innerHTML = `
-                    <div class="cuadro">
-                <div class="cuadrito">
-                    <img src="https://es.nissanusa.com/content/dam/Nissan/us/experience_nissan/newsevents/skyline-to-gt-r/2024-nissan-gtr-special-edition.png.ximg.l_8_m.smart.png" alt="">
-                    <p>Carros</p>
-                    <p>Tarifa: 2000 por hora</p>
-                </div>
-                <div class="cuadrito">
-                    <img id="moto" src="https://images.ctfassets.net/x7j9qwvpvr5s/8nQX26ft2Sk1Jzk3xQI93/d4b3009d2899e57000d1189e9b8c29a7/Model-Menu-MY22-MTS-V4-S-Wh.png" alt="">
-                    <p>Motos</p>
-                    <p>Tarifa: 1000 por hora</p>
-                </div>
-                <div class="cuadrito">
-                    <img id="bici" src="https://ebike.es/wp-content/uploads/2021/01/76502540.jpg" alt="">
-                    <p> Bicicletas</p>
-                    <p>Tarifa: 500 por hora</p>
-                </div>
-            </div>
+    <div class="cuadro">
+    <div class="cuadrito">
+        <img src="https://es.nissanusa.com/content/dam/Nissan/us/experience_nissan/newsevents/skyline-to-gt-r/2024-nissan-gtr-special-edition.png.ximg.l_8_m.smart.png" alt="">
+        <div class="separador">
+          <p>Carros</p>
+          <p>Tarifa: 2000 por hora</p>  
+        </div>
+    </div>
+    <div class="cuadrito">
+        <img id="moto" src="https://images.ctfassets.net/x7j9qwvpvr5s/8nQX26ft2Sk1Jzk3xQI93/d4b3009d2899e57000d1189e9b8c29a7/Model-Menu-MY22-MTS-V4-S-Wh.png" alt="">
+        <div class="separador">
+          <p>Motos</p>
+          <p>Tarifa: 1000 por hora</p>  
+        </div>
+    </div>
+    <div class="cuadrito">
+        <img id="bici" src="https://ebike.es/wp-content/uploads/2021/01/76502540.jpg" alt="">
+        <div class="separador">
+          <p>Bicilietas</p>
+          <p>Tarifa: 500 por hora</p>  
+        </div>
+    </div>
+    <div class="cuadrito">
+      <img id="mulas" src="https://comercializadorainnovalux.com/wp-content/uploads/2021/09/T_800_Camarote.png" alt="">
+      <div class="separador">
+        <p>Mulas</p>
+        <p>Tarifa: 4000 por hora</p>  
+      </div>
+  </div>
+</div>
 
     `
     creador.appendChild(contenido)

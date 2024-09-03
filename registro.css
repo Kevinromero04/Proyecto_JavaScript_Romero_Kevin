@@ -34,7 +34,6 @@ body{
     height: 99.5vh;
     justify-content: center;
     align-items: center;
-    border: rgb(255, 0, 0) solid 2px;
   }
   button {
     height: 10%;
