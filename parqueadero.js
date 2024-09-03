@@ -10,7 +10,7 @@ async function registre_su_carro() {
     creador.innerHTML = ""
     const contenido = document.createElement("section")
     contenido.className = "datos"
-    contenido.innerHTML =  `<h1>vamos</h1>`
+    contenido.innerHTML = `<h1>vamos</h1>`
     creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
@@ -25,11 +25,27 @@ async function tarifas_vehiculos() {
     const creador = document.querySelector(".container")
     creador.innerHTML = ""
     const contenido = document.createElement("section")
-    contenido.className = "datos"
-    contenido.innerHTML =  `<div class="precios">
-        <div class = "separador">
-        
-    </div>  `
+    contenido.className = "cuotas"
+    contenido.innerHTML = `
+                    <div class="cuadro">
+                <div class="cuadrito">
+                    <img src="https://es.nissanusa.com/content/dam/Nissan/us/experience_nissan/newsevents/skyline-to-gt-r/2024-nissan-gtr-special-edition.png.ximg.l_8_m.smart.png" alt="">
+                    <p>Carros</p>
+                    <p>Tarifa: 2000 por hora</p>
+                </div>
+                <div class="cuadrito">
+                    <img id="moto" src="https://images.ctfassets.net/x7j9qwvpvr5s/8nQX26ft2Sk1Jzk3xQI93/d4b3009d2899e57000d1189e9b8c29a7/Model-Menu-MY22-MTS-V4-S-Wh.png" alt="">
+                    <p>Motos</p>
+                    <p>Tarifa: 1000 por hora</p>
+                </div>
+                <div class="cuadrito">
+                    <img id="bici" src="https://ebike.es/wp-content/uploads/2021/01/76502540.jpg" alt="">
+                    <p> Bicicletas</p>
+                    <p>Tarifa: 500 por hora</p>
+                </div>
+            </div>
+
+    `
     creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
@@ -45,40 +61,7 @@ async function zona_de_pago() {
     creador.innerHTML = ""
     const contenido = document.createElement("section")
     contenido.className = "datos"
-    contenido.innerHTML =  `<h1>terminamos</h1>`
+    contenido.innerHTML = `<h1>terminamos</h1>`
     creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
-/*----------------------------------------------------------------------------------
-LLAMADO DE administrador
------------------------------------------------------------------------------------------*/
-var administrador = document.querySelector("#admin")
-administrador.addEventListener("click", jefe)
-
-
-async function jefe() {
-    const creador = document.querySelector("body")
-    creador.innerHTML =  `
-     
-    <video src="./imagenes/fondo.mp4" autoplay loop class="fondo"></video>
-    <div id="salido">
-        <button id="salir">salir</button>
-    </div
-<section>
-    <div class="registro">
-        <input type="email" placeholder="juanito@gmail.com">
-        <input type="password" placeholder="Ingrese su contraseña">    
-        <button>Iniciar sesion</button> 
-    </div>    
-</section>
-<style>
-body{
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    position: relative;
-    }
-<style>
-`
-}
