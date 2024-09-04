@@ -1,12 +1,16 @@
 body{
   margin: 0;
+  background: url(imagenes/videoframe_4894.png);
+  background-attachment: fixed;
+  object-fit: cover;
+  background-size: cover;
 }
 #salido{
   height: 0;
 }
 
 .registro { 
-    position: absolute;
+
     display: flex;
     flex-direction: column;
     width: 30%;
@@ -18,20 +22,12 @@ body{
     justify-content: center;
     align-items: center;
   }
-  .fondo { 
-    background-attachment: fixed;
-    background-size: cover;
-    position: absolute;
-    object-fit: cover;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-  }
+
   .contenedor { 
     display: flex;
     flex-direction: column;
     width: 99, 5%;
-    height: 99.5vh;
+    height: 90vh;
     justify-content: center;
     align-items: center;
   }
@@ -39,30 +35,33 @@ body{
     height: 10%;
     width: 60%;
     background: rgb(202, 202, 202);
-
-    border-top: transparent;
-    border-right: transparent;
-    border-left: transparent;
+    cursor: pointer;
     border-bottom: black solid 2px;
+    border-radius: 10px;
+
   }
   input {
     height: 8%;
     width: 60%;
-  
+    border-radius: 10px;
     border-bottom: black solid 2px;
     border-top: transparent;
     border-right: transparent;
     border-left: transparent;
-    background: transparent;
+    background: rgb(202, 202, 202);
   }
   
   #salir{ 
     height: 5vh;
     width: 20vh;
-    position: relative;
     margin: 20px;
     border-radius: 10px;
 }
 #salir:hover{ 
     background-color: green;
+}
+
+.acpetar{
+
+
 }
