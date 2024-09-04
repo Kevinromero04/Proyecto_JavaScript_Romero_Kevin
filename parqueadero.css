@@ -192,3 +192,15 @@ body {
 #modelo_html{
 margin-top: 10px;
 }
+.cuadro3{
+  width: 50%;
+  height: 60vh;
+  border: rgb(0, 0, 0) solid 4px;
+  border-radius: 20px 0 0 20px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: scroll;
+}

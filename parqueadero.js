@@ -3,10 +3,10 @@
 LLAMADO DE REGISTRESE
 -----------------------------------------------------------------------------------------*/
 var regis = document.querySelector("#registro")
-regis.addEventListener("click", registre_su_carro)
+regis.addEventListener("click", registre_su_vehivulo)
 
 
-async function registre_su_carro() {
+async function registre_su_vehivulo() {
     const creador = document.querySelector(".container")
     creador.innerHTML = ""
     const contenido = document.createElement("section")
