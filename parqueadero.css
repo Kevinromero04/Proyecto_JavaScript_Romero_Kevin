@@ -63,7 +63,6 @@ body {
 }
 .registro{
   height: 73vh;
-  border: rgb(0, 255, 106) solid 2px;
   display:flex;
   justify-content: center;
   align-items: center;
@@ -119,7 +118,6 @@ body {
 
 .cuotas2{
   height: 73vh;
-  border: red solid 2px;
   display:flex;
   justify-content: center;
   align-items: center;
@@ -144,11 +142,53 @@ body {
   color: white;
   width: 30%;
   gap: 10%;
-  border: red solid 2px;
 }
 .boton_regis{
   height: 3vh;
   
   width: 95%;
   border-radius: 10px;
+}
+#cargar_vehiculo{
+  margin-top: 5vh;
+  height: 10%;
+  width: 20%;
+  border-radius: 10px;
+}
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 10px 10px 0px 0px;
+  padding: 7px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.dropdown-content {
+  display: none;
+  height: auto;
+  width: 17.2%;
+  position: absolute;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  margin-bottom: 10px;
+  z-index: 1;
+}
+
+.dropdown-content.show {
+  display: block;
+}
+
+.dropdown-content form {
+
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-content input {
+
+  font-size: 14px;
+}
+#modelo_html{
+margin-top: 10px;
 }

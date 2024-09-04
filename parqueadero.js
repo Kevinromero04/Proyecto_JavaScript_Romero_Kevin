@@ -12,8 +12,36 @@ async function registre_su_carro() {
     const contenido = document.createElement("section")
     contenido.className = "registro"
     contenido.innerHTML = `
-    <div class="cuadro2">
-    </div>
+                <div class="cuadro2">
+                <form  action="on"></form>
+                <div class="separador_form">
+                  <h4>Placa</h4>
+                  <input type="text" class="boton_regis" id="registra_placa"  placeholder="Ejemplo: ABC-123">
+                </div>
+                <div class="separador_form">
+                  <h4>Tipo</h4>
+                  <div class="dropdown">
+                    <button onclick="toggleDropdown()" class="dropbtn">Mostrar Formulario</button>
+                    <div id="myDropdown" class="dropdown-content">
+                        <form id="cuadro_form">
+                            <button class="tamaño_boton">Carros</button>
+                            <button class="tamaño_boton">Motos</button>
+                            <button class="tamaño_boton">Mulas</button>
+                        </form>
+                    </div>
+                </div>
+                </div>
+                <div class="separador_form" id="modelo_html">
+                  <h4>Modelo</h4>
+                  <input type="text" class="boton_regis" id="registra_modelo" placeholder="Ejemplo: Chevrolet">
+                </div><div class="separador_form">
+                  <h4>Espacio (hay 20 espacios)</h4>
+                  <input type="text" class="boton_regis" id="registra_espacio" placeholder="A-1, A-20">
+                </div>
+                <button id="cargar_vehiculo">Registrar</button>
+              </div>
+            </div>
+
     `
     creador.appendChild(contenido)
 }
