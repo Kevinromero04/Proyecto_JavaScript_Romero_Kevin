@@ -20,3 +20,7 @@ function mostrarVehiculos() {
   }
 }
 mostrarVehiculos();
+
+
+
+hacer que aparezcan todos los no pagos es porque tenfgo dos funciones de esas creo

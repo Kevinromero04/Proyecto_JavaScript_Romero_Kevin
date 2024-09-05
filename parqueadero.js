@@ -82,6 +82,7 @@ async function registre_su_vehivulo() {
   });
 }
 
+// Guardar Datos del Vehículo
 function guardarDatosVehiculo(tipoVehiculo) {
   const placa = document.querySelector("#registra_placa")?.value;
   const modelo = document.querySelector("#registra_modelo")?.value;
@@ -134,6 +135,7 @@ function guardarDatosVehiculo(tipoVehiculo) {
   mostrarInformacionRegistrada(espacio);
 }
 
+// Mostrar Información Registrada
 function mostrarInformacionRegistrada(espacio) {
   let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
   const contenedor = document.querySelector(".recien_regis");
@@ -161,11 +163,49 @@ function mostrarInformacionRegistrada(espacio) {
     if (!pagado) {
       document.querySelector("#pagar_btn").addEventListener("click", () => pagar(espacio));
     }
-  } else {
-    contenedor.innerHTML = "<p>No se encontró información para el espacio especificado.</p>";
   }
 }
 
+// Mostrar Todos los Vehículos No Pagados
+function mostrarVehiculosNoPagados() {
+  let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
+  const contenedor = document.querySelector(".recien_regis");
+
+  // Limpiar el contenido actual
+  contenedor.innerHTML = "";
+
+  // Mostrar solo los vehículos no pagados
+  let hayVehiculosNoPagados = false;
+  for (let espacio in vehiculos) {
+    if (!vehiculos[espacio].pagado) {
+      hayVehiculosNoPagados = true;
+      const { placa, modelo, tipo, hora } = vehiculos[espacio];
+      contenedor.innerHTML += `
+            <div>
+                <h4>Espacio: ${espacio}</h4>
+                <p>Placa: ${placa}</p>
+                <p>Modelo: ${modelo}</p>
+                <p>Tipo: ${tipo}</p>
+                <p>Hora de registro: ${hora}</p>
+                <p>Estado de pago: No pagado</p>
+                <button class="pagar_btn" data-espacio="${espacio}">Pagar</button>
+                <hr>
+            </div>
+        `;
+    }
+  }
+
+  if (!hayVehiculosNoPagados) {
+    contenedor.innerHTML = "<p>No hay vehículos no pagados.</p>";
+  }
+
+  // Añadir listener para todos los botones de pago
+  document.querySelectorAll(".pagar_btn").forEach(button => {
+    button.addEventListener("click", () => pagar(button.dataset.espacio));
+  });
+}
+
+// Función de Pago
 function pagar(espacio) {
   let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
   const vehiculo = vehiculos[espacio];
@@ -208,9 +248,23 @@ function pagar(espacio) {
   vehiculo.pagado = true;
   localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
 
+  // Mover el vehículo al almacenamiento de pagados
+  let vehiculosPagados = JSON.parse(localStorage.getItem("vehiculos_pagados")) || {};
+  vehiculosPagados[espacio] = vehiculo;
+  localStorage.setItem("vehiculos_pagados", JSON.stringify(vehiculosPagados));
+
+  // Eliminar el vehículo del almacenamiento de no pagados
+  delete vehiculos[espacio];
+  localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
+
   // Actualizar la información mostrada
-  mostrarInformacionRegistrada(espacio);
+  mostrarVehiculosNoPagados();
 }
+
+// Llamar a mostrarVehiculosNoPagados al cargar la página
+document.addEventListener("DOMContentLoaded", mostrarVehiculosNoPagados);
+
+
 
 
 //----------------------------------------------------------------------------------------------------
@@ -251,6 +305,11 @@ async function tarifas_vehiculos() {
   </div>
 </div>
 
+<style>
+  .recien_regis{
+  display: none
+  }
+</style>
 
     `
   creador.appendChild(contenido)
@@ -268,7 +327,12 @@ async function zona_de_pago() {
   creador.innerHTML = ""
   const contenido = document.createElement("section")
   contenido.className = "datos"
-  contenido.innerHTML = `<h1>terminamos</h1>`
+  contenido.innerHTML = `<h1>terminamos</h1>
+  <style>
+  .recien_regis{
+  display: none
+  }
+</style>`
   creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
@@ -296,89 +360,3 @@ function actualizarHoraActual() {
 
 
 
-/*
-function registerEntranceVehicles() {
-  const plateInputEntrance = document.getElementById("plateInputEntrance");
-  const modelInputEntrance = document.getElementById("modelInputEntrance");
-  const slotInputEntrance = document.getElementById("slotInputEntrance");
-  const dropdownButton = document.getElementById("dropdownButton");
-
-  const expresionRegularVehiculo = /^[A-Za-z]{3}\d{3}$/;
-  const expresionRegularSlot = /^A([1-9]|[1-9]\d|50)$/;
-
-  const vehicleType = dropdownButton.textContent === 'Select Type' ? '' : dropdownButton.textContent;
-
-  if (
-      !plateInputEntrance.value ||
-      !modelInputEntrance.value ||
-      !slotInputEntrance.value ||
-      !vehicleType
-  ) {
-      return alert("Rellena todos los campos!");
-  }
-  if (!expresionRegularVehiculo.test(plateInputEntrance.value)) {
-      return alert("Placa escrita en el formato incorrecto! (ABC123)");
-  }
-  if (!expresionRegularSlot.test(slotInputEntrance.value)) {
-      return alert("El slot está escrito en un formato incorrecto! (A1-A50)");
-  }
-
-  const slotDisponible = slots.find(slot => slot.name === slotInputEntrance.value);
-
-  if (!slotDisponible) {
-      return alert("El slot no existe!");
-  }
-  if (!slotDisponible.available) {
-      return alert("El slot ya ha sido ocupado!");
-  }
-
-  const placaExistente = vehicles.find(vehicle => vehicle.plate === plateInputEntrance.value);
-  if (placaExistente) {
-      return alert("La placa ya ha sido registrada!");
-  }
-
-  let price;
-  switch (vehicleType) {
-      case 'Carro':
-          price = 3000;
-          break;
-      case 'Moto':
-          price = 1000;
-          break;
-      case 'Mula':
-          price = 6000;
-          break;
-      default:
-          price = 0;
-  }
-
-  const newVehicle = {
-      plate: plateInputEntrance.value,
-      model: modelInputEntrance.value,
-      entrance_hour: hourInputEntrance.value,
-      slot: slotInputEntrance.value,
-      exit_hour: "",
-      price: price,
-      type: vehicleType,
-      total_cost: 0,
-      member: false
-  };
-
-  vehicles.push(newVehicle);
-  slotDisponible.available = false;
-
-  guardarVehiculosEnLocalStorage();
-
-  alert("Entrada registrada exitosamente");
-  console.log(vehicles);
-
-  plateInputEntrance.value = '';
-  modelInputEntrance.value = '';
-  hourInputEntrance.value = '';
-  slotInputEntrance.value = '';
-  dropdownButton.textContent = 'Select Type';
-}
-
-window.addEventListener('beforeunload', () => {
-  guardarVehiculosEnLocalStorage();
-});*/
