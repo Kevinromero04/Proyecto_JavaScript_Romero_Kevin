@@ -134,6 +134,7 @@ body {
     align-items: center;
     flex-wrap: wrap;
     flex-direction: column;
+    flex-wrap: wrap;
 
   }
 
@@ -224,6 +225,72 @@ margin-top: 10px;
 #margen_hours{
   margin: 0;
 }
+.container{
+  height: 100%;
+
+
+}
+.no_han_pagado{
+  height: auto;
+  display: flex;
+  width: 100%;
+  gap: 5%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  border: black solid 2px;
+  margin-top: 20px;
+
+  
+}
+.no_han_pagado button{
+  height: 6vh;
+  width: 10vh;
+  
+}
+.no_pago{
+  height: 100%;
+  display: none;
+
+  background: rgba(157, 157, 157, 0.975);
+
+}
 .recien_regis{
-  color: white;
+
+  height: auto;
+  width: 80%;
+}
+.separador2{
+  display: flex;
+  gap: 3%;
+  flex-direction: row;
+  justify-content: center;
+  
+}
+.financias h4{
+  margin: 0;
+}
+
+.container{
+  width: 100%; /* Toma el 100% del ancho del viewport */
+  height: 100%;
+  background: rgba(157, 157, 157, 0.975);
+}
+.finanza_fondo{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.financias{
+  border: solid black 2px;
+  width: 70%;
+  height: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+
 }

@@ -21,7 +21,7 @@ async function registre_su_vehivulo() {
                 <div class="separador_form">
                   <h4>Tipo</h4>
                   <div class="dropdown">
-                    <button onclick="toggleDropdown()" class="dropbtn" id="boton_mostrar">Mostrar Formulario</button>
+                    <button onclick="toggleDropdown()" class="dropbtn" id="boton_mostrar">Mostrar vehiculos</button>
                     <div id="myDropdown" class="dropdown-content">
                         <form id="cuadro_form">
                             <button id="op_carros" class="tamaño_boton">Carros</button>
@@ -35,13 +35,7 @@ async function registre_su_vehivulo() {
                   <h4>Modelo</h4>
                   <input type="text" class="boton_regis" id="registra_modelo" placeholder="Ejemplo: Chevrolet">
                 </div>
-                <div class="separador_form" id="modelo_html">
-                  <h4 id="margen_hours">Hora</h4>
-                  <button class="hora">presiona aqui para saber la hora</button>
-                  <div class="colocar_hora">
 
-                  </div>
-                </div>
                 <div class="separador_form">
                   <h4>Espacio (hay 20 espacios)</h4>
                   <input type="text" class="boton_regis" id="registra_espacio" placeholder="A-1, A-20">
@@ -49,7 +43,16 @@ async function registre_su_vehivulo() {
                 <button id="cargar_vehiculo">Registrar</button>
               </div>
             </div>
+            <style>
+              .registro{
+                background: rgba(157, 157, 157, 0.975);
+              }
 
+              .no_pago{
+                display: block;
+              }
+
+            </style>
     `
   creador.appendChild(contenido);
 
@@ -132,74 +135,55 @@ function guardarDatosVehiculo(tipoVehiculo) {
   localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
 
   alert("Vehículo registrado con éxito.");
-  mostrarInformacionRegistrada(espacio);
 }
 
-// Mostrar Información Registrada
-function mostrarInformacionRegistrada(espacio) {
-  let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
-  const contenedor = document.querySelector(".recien_regis");
-
-  // Limpiar el contenido actual
-  contenedor.innerHTML = "";
-
-  // Mostrar solo la información del vehículo en el espacio dado
-  if (vehiculos[espacio]) {
-    const { placa, modelo, tipo, hora, pagado } = vehiculos[espacio];
-    contenedor.innerHTML = `
-          <div>
-              <h4>Espacio: ${espacio}</h4>
-              <p>Placa: ${placa}</p>
-              <p>Modelo: ${modelo}</p>
-              <p>Tipo: ${tipo}</p>
-              <p>Hora de registro: ${hora}</p>
-              <p>Estado de pago: ${pagado ? 'Pagado' : 'No pagado'}</p>
-              <hr>
-              ${!pagado ? '<button id="pagar_btn">Pagar</button>' : ''}
-          </div>
-      `;
-
-    // Añadir listener para el botón de pago si existe
-    if (!pagado) {
-      document.querySelector("#pagar_btn").addEventListener("click", () => pagar(espacio));
-    }
-  }
-}
-
+const activa = document.querySelector(".no_pago")
+activa.addEventListener("click", mostrarVehiculosNoPagados)
 // Mostrar Todos los Vehículos No Pagados
 function mostrarVehiculosNoPagados() {
   let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
   const contenedor = document.querySelector(".recien_regis");
+  contenedor.innerHTML = ''; // Limpia el contenedor antes de agregar nuevos elementos
 
-  // Limpiar el contenido actual
-  contenedor.innerHTML = "";
+  // Variable para verificar si hay vehículos no pagados
+  let hayVehiculosNoPagados = false;
 
   // Mostrar solo los vehículos no pagados
-  let hayVehiculosNoPagados = false;
   for (let espacio in vehiculos) {
-    if (!vehiculos[espacio].pagado) {
-      hayVehiculosNoPagados = true;
+    if (vehiculos[espacio].pagado === false) {
+      hayVehiculosNoPagados = true; // Cambia a verdadero si encontramos un vehículo no pagado
       const { placa, modelo, tipo, hora } = vehiculos[espacio];
       contenedor.innerHTML += `
-            <div>
-                <h4>Espacio: ${espacio}</h4>
-                <p>Placa: ${placa}</p>
-                <p>Modelo: ${modelo}</p>
-                <p>Tipo: ${tipo}</p>
-                <p>Hora de registro: ${hora}</p>
-                <p>Estado de pago: No pagado</p>
-                <button class="pagar_btn" data-espacio="${espacio}">Pagar</button>
-                <hr>
-            </div>
-        `;
+        <div class="no_han_pagado">
+          <h4>Espacio: ${espacio}</h4>
+          <p>Placa: ${placa}</p>
+          <p>Modelo: ${modelo}</p>
+          <p>Tipo: ${tipo}</p>
+          <p>Hora de registro: ${hora}</p>
+          <p>Estado de pago: No pagado</p>
+          <button class="pagar_btn" data-espacio="${espacio}">Pagar</button>
+
+        </div>
+
+      <style>
+      .no_pago{
+        display: block;
+
+        height: 100vh;
+
+        background: rgba(157, 157, 157, 0.975);
+      }
+
+      </style>
+      `;
     }
   }
-
-  if (!hayVehiculosNoPagados) {
-    contenedor.innerHTML = "<p>No hay vehículos no pagados.</p>";
+  // Si no se encontró ningún vehículo no pagado, mostrar un mensaje
+  if (hayVehiculosNoPagados === false) {
+    console.log("Ya todos han pagado");
   }
 
-  // Añadir listener para todos los botones de pago
+  // Agregar event listeners a los botones de pago
   document.querySelectorAll(".pagar_btn").forEach(button => {
     button.addEventListener("click", () => pagar(button.dataset.espacio));
   });
@@ -257,12 +241,10 @@ function pagar(espacio) {
   delete vehiculos[espacio];
   localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
 
-  // Actualizar la información mostrada
-  mostrarVehiculosNoPagados();
+
 }
 
-// Llamar a mostrarVehiculosNoPagados al cargar la página
-document.addEventListener("DOMContentLoaded", mostrarVehiculosNoPagados);
+
 
 
 
@@ -309,7 +291,7 @@ async function tarifas_vehiculos() {
   .recien_regis{
   display: none
   }
-</style>
+</>
 
     `
   creador.appendChild(contenido)
@@ -318,21 +300,47 @@ async function tarifas_vehiculos() {
 /*----------------------------------------------------------------------------------
 LLAMADO DE Zona de pago
 -----------------------------------------------------------------------------------------*/
-var zona = document.querySelector("#zona_pago")
-zona.addEventListener("click", zona_de_pago)
+var administra = document.querySelector("#admin")
+administra.addEventListener("click", historial_pagos)
 
 
-async function zona_de_pago() {
+async function historial_pagos() {
+  let vehiculos = JSON.parse(localStorage.getItem("vehiculos_pagados")) || {};
   const creador = document.querySelector(".container")
   creador.innerHTML = ""
   const contenido = document.createElement("section")
-  contenido.className = "datos"
-  contenido.innerHTML = `<h1>terminamos</h1>
-  <style>
-  .recien_regis{
-  display: none
+  contenido.className = "finanza_fondo"
+  console.log("Ass")
+  for (let espacio in vehiculos) {
+    if (vehiculos[espacio].pagado === true) {
+      console.log("22Ass")
+      const { placa, modelo, tipo, hora } = vehiculos[espacio];
+      contenido.innerHTML += `
+        <div class="financias">
+          <h4>Espacio: ${espacio}</h4>
+          <p>Placa: ${placa}</p>
+          <p>Modelo: ${modelo}</p>
+          <p>Tipo: ${tipo}</p>
+          <p>Hora de registro: ${hora}</p>
+          <p>Estado de pago: pago</p>
+          <button class="pagar_btn" data-espacio="${espacio}">Pagar</button>
+
+        </div>
+      <style>
+      .container{
+          width: 100%; /* Toma el 100% del ancho del viewport */
+          height: 100%;
+        }
+      </style>
+      `;
+    }
   }
-</style>`
+
+
+  document.querySelectorAll(".pagar_btn").forEach(button => {
+    button.addEventListener("click", () => pagar(button.dataset.espacio));
+  });
+
   creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
