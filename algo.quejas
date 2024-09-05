@@ -1,1 +1,22 @@
 toca arreglar el apartado de administrador cuadrar los cuadros y seguir
+
+
+
+
+function mostrarVehiculos() {
+  const placa = document.querySelector("#registra_placa").value;
+  const modelo = document.querySelector("#registra_modelo").value;
+  const espacio = document.querySelector("#registra_espacio").value.toUpperCase();
+  const hora = new Date().toLocaleTimeString();
+  let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
+  for (let i = 1; i <= 50; i++) {
+      let espacio = `A-${i}`; 
+  if (vehiculos[espacio].placa === placa) {
+        alert(`la placa ${placa} ya está ocupado. Elija otro.`);
+      } 
+      else {
+          console.log(`Espacio ${espacio} está vacío.`);
+      }
+  }
+}
+mostrarVehiculos();

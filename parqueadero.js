@@ -7,11 +7,11 @@ regis.addEventListener("click", registre_su_vehivulo)
 
 
 async function registre_su_vehivulo() {
-    const creador = document.querySelector(".container")
-    creador.innerHTML = ""
-    const contenido = document.createElement("section")
-    contenido.className = "registro"
-    contenido.innerHTML = `
+  const creador = document.querySelector(".container")
+  creador.innerHTML = ""
+  const contenido = document.createElement("section")
+  contenido.className = "registro"
+  contenido.innerHTML = `
                 <div class="cuadro2">
                 <form  action="on"></form>
                 <div class="separador_form">
@@ -21,12 +21,12 @@ async function registre_su_vehivulo() {
                 <div class="separador_form">
                   <h4>Tipo</h4>
                   <div class="dropdown">
-                    <button onclick="toggleDropdown()" class="dropbtn">Mostrar Formulario</button>
+                    <button onclick="toggleDropdown()" class="dropbtn" id="boton_mostrar">Mostrar Formulario</button>
                     <div id="myDropdown" class="dropdown-content">
                         <form id="cuadro_form">
-                            <button class="tamaño_boton">Carros</button>
-                            <button class="tamaño_boton">Motos</button>
-                            <button class="tamaño_boton">Mulas</button>
+                            <button id="op_carros" class="tamaño_boton">Carros</button>
+                            <button id="op_motos" class="tamaño_boton">Motos</button>
+                            <button id="op_mulas" class="tamaño_boton">Mulas</button>
                         </form>
                     </div>
                 </div>
@@ -34,7 +34,15 @@ async function registre_su_vehivulo() {
                 <div class="separador_form" id="modelo_html">
                   <h4>Modelo</h4>
                   <input type="text" class="boton_regis" id="registra_modelo" placeholder="Ejemplo: Chevrolet">
-                </div><div class="separador_form">
+                </div>
+                <div class="separador_form" id="modelo_html">
+                  <h4 id="margen_hours">Hora</h4>
+                  <button class="hora">presiona aqui para saber la hora</button>
+                  <div class="colocar_hora">
+
+                  </div>
+                </div>
+                <div class="separador_form">
                   <h4>Espacio (hay 20 espacios)</h4>
                   <input type="text" class="boton_regis" id="registra_espacio" placeholder="A-1, A-20">
                 </div>
@@ -43,8 +51,168 @@ async function registre_su_vehivulo() {
             </div>
 
     `
-    creador.appendChild(contenido)
+  creador.appendChild(contenido);
+
+  let tipoVehiculo = null;
+
+  var op_car = document.querySelector("#op_carros");
+  op_car.addEventListener("click", function (event) {
+    event.preventDefault();
+    tipoVehiculo = "Carro";
+  });
+
+  var op_motor = document.querySelector("#op_motos");
+  op_motor.addEventListener("click", function (event) {
+    event.preventDefault();
+    tipoVehiculo = "Moto";
+  });
+
+  var op_mula = document.querySelector("#op_mulas");
+  op_mula.addEventListener("click", function (event) {
+    event.preventDefault();
+    tipoVehiculo = "Mula";
+  });
+
+
+  var registrarBtn = document.querySelector("#cargar_vehiculo");
+  registrarBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    guardarDatosVehiculo(tipoVehiculo);
+
+  });
 }
+
+function guardarDatosVehiculo(tipoVehiculo) {
+  const placa = document.querySelector("#registra_placa")?.value;
+  const modelo = document.querySelector("#registra_modelo")?.value;
+  const espacio = document.querySelector("#registra_espacio")?.value.toUpperCase();
+  const hora = new Date().toLocaleTimeString();
+
+  // Validación de datos
+  if (!placa || !modelo || !espacio || !tipoVehiculo) {
+    alert("Todos los campos, incluido el tipo de vehículo, son obligatorios.");
+    return;
+  }
+
+  // Validar que el espacio esté dentro de A1 a A50
+  if (!/^(A-(?:[1-9]|[1-4][0-9]|50))$/.test(espacio)) {
+    alert("El espacio debe estar entre A-1 y A-50.");
+    return;
+  }
+
+  // Obtener los datos actuales del localStorage o crear una nueva estructura
+  let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
+
+  // Verificar si la placa ya está registrada en algún espacio
+  for (let key in vehiculos) {
+    if (vehiculos[key].placa === placa) {
+      alert(`La placa ${placa} ya está registrada en otro espacio. Elija otra placa.`);
+      return;
+    }
+  }
+
+  // Verificar si el espacio ya está ocupado
+  if (vehiculos[espacio]) {
+    alert(`El espacio ${espacio} ya está ocupado. Elija otro.`);
+    return;
+  }
+
+  // Guardar los datos del vehículo en el espacio
+  vehiculos[espacio] = {
+    placa,
+    modelo,
+    tipo: tipoVehiculo,
+    hora,
+    pagado: false,  // Añadir estado de pago
+    tiempoRegistro: new Date().getTime()  // Guardar tiempo de registro
+  };
+
+  // Actualizar localStorage
+  localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
+
+  alert("Vehículo registrado con éxito.");
+  mostrarInformacionRegistrada(espacio);
+}
+
+function mostrarInformacionRegistrada(espacio) {
+  let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
+  const contenedor = document.querySelector(".recien_regis");
+
+  // Limpiar el contenido actual
+  contenedor.innerHTML = "";
+
+  // Mostrar solo la información del vehículo en el espacio dado
+  if (vehiculos[espacio]) {
+    const { placa, modelo, tipo, hora, pagado } = vehiculos[espacio];
+    contenedor.innerHTML = `
+          <div>
+              <h4>Espacio: ${espacio}</h4>
+              <p>Placa: ${placa}</p>
+              <p>Modelo: ${modelo}</p>
+              <p>Tipo: ${tipo}</p>
+              <p>Hora de registro: ${hora}</p>
+              <p>Estado de pago: ${pagado ? 'Pagado' : 'No pagado'}</p>
+              <hr>
+              ${!pagado ? '<button id="pagar_btn">Pagar</button>' : ''}
+          </div>
+      `;
+
+    // Añadir listener para el botón de pago si existe
+    if (!pagado) {
+      document.querySelector("#pagar_btn").addEventListener("click", () => pagar(espacio));
+    }
+  } else {
+    contenedor.innerHTML = "<p>No se encontró información para el espacio especificado.</p>";
+  }
+}
+
+function pagar(espacio) {
+  let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
+  const vehiculo = vehiculos[espacio];
+
+  if (!vehiculo) {
+    alert("No se encontró información para el espacio especificado.");
+    return;
+  }
+
+  if (vehiculo.pagado) {
+    alert("El vehículo ya ha sido pagado.");
+    return;
+  }
+
+  const tiempoActual = new Date().getTime();
+  const tiempoRegistro = vehiculo.tiempoRegistro;
+  const tiempoTranscurrido = (tiempoActual - tiempoRegistro) / 1000;  // Tiempo en segundos
+  let costo;
+
+  // Calcular el costo basado en el tipo de vehículo
+  switch (vehiculo.tipo) {
+    case "carro":
+      costo = 0.5 * tiempoTranscurrido;
+      break;
+    case "moto":
+      costo = 0.25 * tiempoTranscurrido;
+      break;
+    case "mula":
+      costo = 10 * tiempoTranscurrido;
+      break;
+    default:
+      costo = 0;
+      break;
+  }
+
+  // Mostrar el costo
+  alert(`El costo total es: ${costo.toFixed(2)} pesos`);
+
+  // Actualizar el estado de pago
+  vehiculo.pagado = true;
+  localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
+
+  // Actualizar la información mostrada
+  mostrarInformacionRegistrada(espacio);
+}
+
+
 //----------------------------------------------------------------------------------------------------
 /*----------------------------------------------------------------------------------
 LLAMADO DE Tarifas
@@ -54,11 +222,11 @@ tarifa.addEventListener("click", tarifas_vehiculos)
 
 
 async function tarifas_vehiculos() {
-    const creador = document.querySelector(".container")
-    creador.innerHTML = ""
-    const contenido = document.createElement("section")
-    contenido.className = "cuotas2"
-    contenido.innerHTML = `
+  const creador = document.querySelector(".container")
+  creador.innerHTML = ""
+  const contenido = document.createElement("section")
+  contenido.className = "cuotas2"
+  contenido.innerHTML = `
     <div class="cuadro">
     <div class="cuadrito">
         <img src="https://es.nissanusa.com/content/dam/Nissan/us/experience_nissan/newsevents/skyline-to-gt-r/2024-nissan-gtr-special-edition.png.ximg.l_8_m.smart.png" alt="">
@@ -75,13 +243,6 @@ async function tarifas_vehiculos() {
         </div>
     </div>
     <div class="cuadrito">
-        <img id="bici" src="https://ebike.es/wp-content/uploads/2021/01/76502540.jpg" alt="">
-        <div class="separador">
-          <p>Bicilietas</p>
-          <p>Tarifa: 500 por hora</p>  
-        </div>
-    </div>
-    <div class="cuadrito">
       <img id="mulas" src="https://comercializadorainnovalux.com/wp-content/uploads/2021/09/T_800_Camarote.png" alt="">
       <div class="separador">
         <p>Mulas</p>
@@ -92,7 +253,7 @@ async function tarifas_vehiculos() {
 
 
     `
-    creador.appendChild(contenido)
+  creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
 /*----------------------------------------------------------------------------------
@@ -103,11 +264,121 @@ zona.addEventListener("click", zona_de_pago)
 
 
 async function zona_de_pago() {
-    const creador = document.querySelector(".container")
-    creador.innerHTML = ""
-    const contenido = document.createElement("section")
-    contenido.className = "datos"
-    contenido.innerHTML = `<h1>terminamos</h1>`
-    creador.appendChild(contenido)
+  const creador = document.querySelector(".container")
+  creador.innerHTML = ""
+  const contenido = document.createElement("section")
+  contenido.className = "datos"
+  contenido.innerHTML = `<h1>terminamos</h1>`
+  creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
+
+
+function actualizarHoraActual() {
+
+  const ahora = new Date();
+  const horas = ahora.getHours().toString().padStart(2, '0');
+  const minutos = ahora.getMinutes().toString().padStart(2, '0');
+  const mostrar_hora = `${horas}:${minutos}`;
+  let hora = document.querySelector(".colocar_hora")
+
+  hora.innerHTML = ""
+  hora.innerHTML = ` <p>${mostrar_hora}</p>
+  
+
+  `
+
+  console.log(mostrar_hora)
+
+}
+
+
+
+
+
+/*
+function registerEntranceVehicles() {
+  const plateInputEntrance = document.getElementById("plateInputEntrance");
+  const modelInputEntrance = document.getElementById("modelInputEntrance");
+  const slotInputEntrance = document.getElementById("slotInputEntrance");
+  const dropdownButton = document.getElementById("dropdownButton");
+
+  const expresionRegularVehiculo = /^[A-Za-z]{3}\d{3}$/;
+  const expresionRegularSlot = /^A([1-9]|[1-9]\d|50)$/;
+
+  const vehicleType = dropdownButton.textContent === 'Select Type' ? '' : dropdownButton.textContent;
+
+  if (
+      !plateInputEntrance.value ||
+      !modelInputEntrance.value ||
+      !slotInputEntrance.value ||
+      !vehicleType
+  ) {
+      return alert("Rellena todos los campos!");
+  }
+  if (!expresionRegularVehiculo.test(plateInputEntrance.value)) {
+      return alert("Placa escrita en el formato incorrecto! (ABC123)");
+  }
+  if (!expresionRegularSlot.test(slotInputEntrance.value)) {
+      return alert("El slot está escrito en un formato incorrecto! (A1-A50)");
+  }
+
+  const slotDisponible = slots.find(slot => slot.name === slotInputEntrance.value);
+
+  if (!slotDisponible) {
+      return alert("El slot no existe!");
+  }
+  if (!slotDisponible.available) {
+      return alert("El slot ya ha sido ocupado!");
+  }
+
+  const placaExistente = vehicles.find(vehicle => vehicle.plate === plateInputEntrance.value);
+  if (placaExistente) {
+      return alert("La placa ya ha sido registrada!");
+  }
+
+  let price;
+  switch (vehicleType) {
+      case 'Carro':
+          price = 3000;
+          break;
+      case 'Moto':
+          price = 1000;
+          break;
+      case 'Mula':
+          price = 6000;
+          break;
+      default:
+          price = 0;
+  }
+
+  const newVehicle = {
+      plate: plateInputEntrance.value,
+      model: modelInputEntrance.value,
+      entrance_hour: hourInputEntrance.value,
+      slot: slotInputEntrance.value,
+      exit_hour: "",
+      price: price,
+      type: vehicleType,
+      total_cost: 0,
+      member: false
+  };
+
+  vehicles.push(newVehicle);
+  slotDisponible.available = false;
+
+  guardarVehiculosEnLocalStorage();
+
+  alert("Entrada registrada exitosamente");
+  console.log(vehicles);
+
+  plateInputEntrance.value = '';
+  modelInputEntrance.value = '';
+  hourInputEntrance.value = '';
+  slotInputEntrance.value = '';
+  dropdownButton.textContent = 'Select Type';
+}
+
+window.addEventListener('beforeunload', () => {
+  guardarVehiculosEnLocalStorage();
+});*/
