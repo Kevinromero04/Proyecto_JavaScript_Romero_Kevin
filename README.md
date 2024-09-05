@@ -15,11 +15,12 @@
 
 1. **Inicio de Sesión (login.html)**
    - Página donde los usuarios pueden iniciar sesión para acceder a la aplicación.
+   - Para el inicar sesion el correo es juankis@gmail.com y la contraseña es naruto123.
 
 2. **Menú Principal (menu.html)**
    - **Regístrate**: Permite a los usuarios registrar un vehículo en el sistema.
    - **Tarifas**: Muestra las tarifas de estacionamiento por tipo de vehículo.
-   - **Historial de Pagos**: Muestra un listado de todos los vehículos que han realizado el pago.
+   - **Historial de Pagos**: Muestra un listado de todos los vehículos que han realizado el pago. (para ver vehiculos no pagados porfavor refrescar la pagina)
 
 ## Funcionalidades
 
@@ -52,11 +53,11 @@
    cd <Proyecto_JavaScript_Romero_Kevin>
    ```
 
-3. Abre `index.html` en tu navegador para ver la aplicación en funcionamiento.
+3. Abre `registro.html` en tu navegador para ver la aplicación en funcionamiento.
 
 ## Uso
 
-1. **Iniciar sesión**: Accede a la página `login.html` e ingresa tus credenciales.
+1. **Iniciar sesión**: Accede a la página `registro.html` e ingresa tus credenciales.
 2. **Menú Principal**: Después de iniciar sesión, serás redirigido a `menu.html`, donde podrás:
    - Registrarte: Agregar un vehículo a la base de datos.
    - Consultar Tarifas: Ver las tarifas de estacionamiento.

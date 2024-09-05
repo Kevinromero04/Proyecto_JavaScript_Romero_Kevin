@@ -15,8 +15,8 @@ function bienvenido(){
    generar.innerHTML = `
    <div class="aceptar">
         <div class="fondo">
-            <h1>Bienvido Juan Mariño</h1>
-            <a href="index.html"><button id="salir">Entrar</button></a>
+            <h1>Bienvenido Juan Mariño</h1>
+            <a href="menu.html"><button id="salir">Entrar</button></a>
         </div>
 
     </div>
