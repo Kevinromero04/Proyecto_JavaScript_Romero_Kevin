@@ -8,7 +8,11 @@ regis.addEventListener("click", registre_su_vehivulo)
 
 async function registre_su_vehivulo() {
   const creador = document.querySelector(".container")
-  creador.innerHTML = ""
+  
+  creador.innerHTML = `
+    <button id="pago">mostrar vehiculos no pagos</button>
+`
+
   const contenido = document.createElement("section")
   contenido.className = "registro"
   contenido.innerHTML = `
@@ -38,7 +42,7 @@ async function registre_su_vehivulo() {
 
                 <div class="separador_form">
                   <h4>Espacio (hay 20 espacios)</h4>
-                  <input type="text" class="boton_regis" id="registra_espacio" placeholder="A-1, A-20">
+                  <input type="text" class="boton_regis" id="registra_espacio" placeholder="A-1, A-50">
                 </div>
                 <button id="cargar_vehiculo">Registrar</button>
               </div>
@@ -51,10 +55,21 @@ async function registre_su_vehivulo() {
               .no_pago{
                 display: block;
               }
+              .container{
+                background: rgba(157, 157, 157, 0.975);
+              }
 
             </style>
     `
+    
+
   creador.appendChild(contenido);
+  var activado = document.querySelector("#pago");
+
+  activado.addEventListener("click", function (event) {
+    event.preventDefault();
+    mostrarVehiculosNoPagados();
+  });
 
   let tipoVehiculo = null;
 
@@ -85,29 +100,30 @@ async function registre_su_vehivulo() {
   });
 }
 
-// Guardar Datos del Vehículo
 function guardarDatosVehiculo(tipoVehiculo) {
   const placa = document.querySelector("#registra_placa")?.value;
   const modelo = document.querySelector("#registra_modelo")?.value;
   const espacio = document.querySelector("#registra_espacio")?.value.toUpperCase();
   const hora = new Date().toLocaleTimeString();
-
-  // Validación de datos
+  console.log(placa)
   if (!placa || !modelo || !espacio || !tipoVehiculo) {
     alert("Todos los campos, incluido el tipo de vehículo, son obligatorios.");
     return;
   }
 
-  // Validar que el espacio esté dentro de A1 a A50
   if (!/^(A-(?:[1-9]|[1-4][0-9]|50))$/.test(espacio)) {
     alert("El espacio debe estar entre A-1 y A-50.");
     return;
   }
+  if (!/^[A-Za-z]{3}-\d{3}$/.test(placa)) {
+    alert("La placa debe tener el formato ABC-123 (tres letras seguidas - de tres números).");
+    return;
+}
 
-  // Obtener los datos actuales del localStorage o crear una nueva estructura
+
+
   let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
 
-  // Verificar si la placa ya está registrada en algún espacio
   for (let key in vehiculos) {
     if (vehiculos[key].placa === placa) {
       alert(`La placa ${placa} ya está registrada en otro espacio. Elija otra placa.`);
@@ -115,43 +131,40 @@ function guardarDatosVehiculo(tipoVehiculo) {
     }
   }
 
-  // Verificar si el espacio ya está ocupado
+
   if (vehiculos[espacio]) {
     alert(`El espacio ${espacio} ya está ocupado. Elija otro.`);
     return;
   }
 
-  // Guardar los datos del vehículo en el espacio
+
   vehiculos[espacio] = {
     placa,
     modelo,
     tipo: tipoVehiculo,
     hora,
-    pagado: false,  // Añadir estado de pago
-    tiempoRegistro: new Date().getTime()  // Guardar tiempo de registro
+    pagado: false, 
+    tiempoRegistro: new Date().getTime() 
   };
 
-  // Actualizar localStorage
   localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
 
   alert("Vehículo registrado con éxito.");
 }
 
-const activa = document.querySelector(".no_pago")
-activa.addEventListener("click", mostrarVehiculosNoPagados)
-// Mostrar Todos los Vehículos No Pagados
+
+
 function mostrarVehiculosNoPagados() {
   let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
   const contenedor = document.querySelector(".recien_regis");
-  contenedor.innerHTML = ''; // Limpia el contenedor antes de agregar nuevos elementos
+  contenedor.innerHTML = "";
 
-  // Variable para verificar si hay vehículos no pagados
   let hayVehiculosNoPagados = false;
 
-  // Mostrar solo los vehículos no pagados
+
   for (let espacio in vehiculos) {
     if (vehiculos[espacio].pagado === false) {
-      hayVehiculosNoPagados = true; // Cambia a verdadero si encontramos un vehículo no pagado
+      hayVehiculosNoPagados = true; 
       const { placa, modelo, tipo, hora } = vehiculos[espacio];
       contenedor.innerHTML += `
         <div class="no_han_pagado">
@@ -173,23 +186,25 @@ function mostrarVehiculosNoPagados() {
 
         background: rgba(157, 157, 157, 0.975);
       }
+      .container{
+          width: 100%; /* Toma el 100% del ancho del viewport */
+          height: 100%;
+          background: rgba(157, 157, 157, 0.975);
 
+        }
       </style>
       `;
     }
   }
-  // Si no se encontró ningún vehículo no pagado, mostrar un mensaje
   if (hayVehiculosNoPagados === false) {
-    console.log("Ya todos han pagado");
+    return alert("ya todos han pagado");
   }
 
-  // Agregar event listeners a los botones de pago
   document.querySelectorAll(".pagar_btn").forEach(button => {
     button.addEventListener("click", () => pagar(button.dataset.espacio));
   });
 }
 
-// Función de Pago
 function pagar(espacio) {
   let vehiculos = JSON.parse(localStorage.getItem("vehiculos")) || {};
   const vehiculo = vehiculos[espacio];
@@ -206,38 +221,38 @@ function pagar(espacio) {
 
   const tiempoActual = new Date().getTime();
   const tiempoRegistro = vehiculo.tiempoRegistro;
-  const tiempoTranscurrido = (tiempoActual - tiempoRegistro) / 1000;  // Tiempo en segundos
+  const tiempoTranscurrido = (tiempoActual - tiempoRegistro) / 1000; 
   let costo;
+console.log("ya", tiempoRegistro)
+console.log("casi",tiempoTranscurrido)
+console.log("ya", tiempoActual)
+console.log(vehiculo.tipo)
+      switch (vehiculo.tipo) {
+        case "Carro":
+          costo = 0.5 * tiempoTranscurrido;
+          console.log("Carro detectado");
+          break;
+        case "Moto":
+          costo = 0.25 * tiempoTranscurrido; 
+          console.log("Moto detectada");
+          break;
+        case "Mula":
+          costo = 10 * tiempoTranscurrido; 
+          console.log("Mula detectada");
+          break;
+        default:
+          costo = 0;
+          console.log("Tipo de vehículo no reconocido");
+          break;
+      }  alert(`El costo total es: ${costo} pesos`);
 
-  // Calcular el costo basado en el tipo de vehículo
-  switch (vehiculo.tipo) {
-    case "carro":
-      costo = 0.5 * tiempoTranscurrido;
-      break;
-    case "moto":
-      costo = 0.25 * tiempoTranscurrido;
-      break;
-    case "mula":
-      costo = 10 * tiempoTranscurrido;
-      break;
-    default:
-      costo = 0;
-      break;
-  }
-
-  // Mostrar el costo
-  alert(`El costo total es: ${costo.toFixed(2)} pesos`);
-
-  // Actualizar el estado de pago
   vehiculo.pagado = true;
   localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
 
-  // Mover el vehículo al almacenamiento de pagados
   let vehiculosPagados = JSON.parse(localStorage.getItem("vehiculos_pagados")) || {};
   vehiculosPagados[espacio] = vehiculo;
   localStorage.setItem("vehiculos_pagados", JSON.stringify(vehiculosPagados));
 
-  // Eliminar el vehículo del almacenamiento de no pagados
   delete vehiculos[espacio];
   localStorage.setItem("vehiculos", JSON.stringify(vehiculos));
 
@@ -260,6 +275,8 @@ tarifa.addEventListener("click", tarifas_vehiculos)
 async function tarifas_vehiculos() {
   const creador = document.querySelector(".container")
   creador.innerHTML = ""
+  const borrador = document.querySelector(".no_pago")
+  borrador.innerHTML = ""
   const contenido = document.createElement("section")
   contenido.className = "cuotas2"
   contenido.innerHTML = `
@@ -291,6 +308,12 @@ async function tarifas_vehiculos() {
   .recien_regis{
   display: none
   }
+  .no_pago{
+  display: none;
+}
+  .no_pago button{
+  display: none;
+}
 </>
 
     `
@@ -308,12 +331,12 @@ async function historial_pagos() {
   let vehiculos = JSON.parse(localStorage.getItem("vehiculos_pagados")) || {};
   const creador = document.querySelector(".container")
   creador.innerHTML = ""
+  const borrador = document.querySelector(".no_pago")
+  borrador.innerHTML = ""   
   const contenido = document.createElement("section")
   contenido.className = "finanza_fondo"
-  console.log("Ass")
   for (let espacio in vehiculos) {
     if (vehiculos[espacio].pagado === true) {
-      console.log("22Ass")
       const { placa, modelo, tipo, hora } = vehiculos[espacio];
       contenido.innerHTML += `
         <div class="financias">
@@ -323,46 +346,29 @@ async function historial_pagos() {
           <p>Tipo: ${tipo}</p>
           <p>Hora de registro: ${hora}</p>
           <p>Estado de pago: pago</p>
-          <button class="pagar_btn" data-espacio="${espacio}">Pagar</button>
 
         </div>
       <style>
       .container{
           width: 100%; /* Toma el 100% del ancho del viewport */
           height: 100%;
+            background: rgba(157, 157, 157, 0.975);
+
+        }
+        .no_pago{
+          display: none
+
         }
       </style>
       `;
     }
   }
 
-
-  document.querySelectorAll(".pagar_btn").forEach(button => {
-    button.addEventListener("click", () => pagar(button.dataset.espacio));
-  });
-
   creador.appendChild(contenido)
 }
 //----------------------------------------------------------------------------------------------------
 
 
-function actualizarHoraActual() {
-
-  const ahora = new Date();
-  const horas = ahora.getHours().toString().padStart(2, '0');
-  const minutos = ahora.getMinutes().toString().padStart(2, '0');
-  const mostrar_hora = `${horas}:${minutos}`;
-  let hora = document.querySelector(".colocar_hora")
-
-  hora.innerHTML = ""
-  hora.innerHTML = ` <p>${mostrar_hora}</p>
-  
-
-  `
-
-  console.log(mostrar_hora)
-
-}
 
 
 

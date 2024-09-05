@@ -233,15 +233,20 @@ margin-top: 10px;
 .no_han_pagado{
   height: auto;
   display: flex;
-  width: 100%;
+  width: 170vh;
   gap: 5%;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   border: black solid 2px;
   margin-top: 20px;
-
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgb(0, 0, 0);
   
+}
+.no_han_pagado:hover{
+  box-shadow: 0 0 15px rgb(255, 255, 255);
+
 }
 .no_han_pagado button{
   height: 6vh;
@@ -251,7 +256,7 @@ margin-top: 10px;
 .no_pago{
   height: 100%;
   display: none;
-
+  width: 100%;
   background: rgba(157, 157, 157, 0.975);
 
 }
@@ -271,26 +276,36 @@ margin-top: 10px;
   margin: 0;
 }
 
-.container{
-  width: 100%; /* Toma el 100% del ancho del viewport */
-  height: 100%;
-  background: rgba(157, 157, 157, 0.975);
-}
+
 .finanza_fondo{
   display: flex;
-  height: 100%;
+  height: 100vh;
   flex-direction: column;
-  justify-content: center;
+
   align-items: center;
 }
 .financias{
   border: solid black 2px;
   width: 70%;
-  height: 50%;
+  height: 10vh;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin-top: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgb(0, 0, 0);
 
+}
+.financias:hover{
+  box-shadow: 0 0 15px rgb(255, 255, 255);
+}
+.recien_regis button{
+  border-radius: 10px;
+
+
+}
+#pago{
+  height: 30px;
+  border-radius: 10px;
 }
